@@ -48,9 +48,21 @@ class PrediccionAPIView(APIView):
 
         # Hacer la predicción utilizando el modelo cargado y los datos de entrada
         prediccion = modelo_prediccion.predict(datos_entrada_reshaped)
+        # Generar mensajes de consejo en función del valor de la predicción
+        if prediccion < 230:
+            mensaje_consejo = "¡Tu puntaje es bastante bajo! Te recomendamos estudiar más y practicar ejercicios similares para mejorar tus habilidades en las áreas evaluadas."
+        elif prediccion >=230 and prediccion<250:
+            mensaje_consejo = "Tu puntaje es bajo. Te sugerimos dedicar tiempo a repasar los temas que consideres más débiles y realizar simulacros de las pruebas para familiarizarte con el formato y agilizar tus respuestas."
+        elif prediccion >=250 and prediccion<300:
+            mensaje_consejo = "Tu puntaje es promedio. Puedes enfocarte en reforzar aquellos temas que sientas menos dominados y practicar la resolución de ejercicios adicionales para aumentar tu velocidad y precisión."
+        elif prediccion >=300 and prediccion<370:
+            mensaje_consejo = "Tienes un buen puntaje. Sin embargo, siempre es recomendable seguir practicando y resolviendo ejercicios para mantener tus habilidades afiladas y asegurar un mejor desempeño en las pruebas."
+        elif prediccion >=370:
+            mensaje_consejo = "¡Felicitaciones! Tu puntaje es excelente. Continúa repasando los temas para mantener tu nivel y considera compartir tus técnicas de estudio con otros estudiantes."
+
 
         # Retornar la respuesta como JSON
-        return Response({'Prediccion Puntaje': int(prediccion)})
+        return Response({'Prediccion Puntaje': int(prediccion), 'msg':mensaje_consejo })
 
 def PrediccionTemplateAPIView(request):
 
@@ -77,8 +89,21 @@ def PrediccionTemplateAPIView(request):
         # Hacer la predicción utilizando el modelo cargado y los datos de entrada
         prediccion = modelo_prediccion.predict(datos_entrada_reshaped)
         print('prediccion ',prediccion)
+        # Generar mensajes de consejo en función del valor de la predicción
+        if prediccion < 230:
+            mensaje_consejo = "¡Tu puntaje es bastante bajo! Te recomendamos estudiar más y practicar ejercicios similares para mejorar tus habilidades en las áreas evaluadas."
+        elif prediccion >=230 and prediccion<250:
+            mensaje_consejo = "Tu puntaje es bajo. Te sugerimos dedicar tiempo a repasar los temas que consideres más débiles y realizar simulacros de las pruebas para familiarizarte con el formato y agilizar tus respuestas."
+        elif prediccion >=250 and prediccion<300:
+            mensaje_consejo = "Tu puntaje es promedio. Puedes enfocarte en reforzar aquellos temas que sientas menos dominados y practicar la resolución de ejercicios adicionales para aumentar tu velocidad y precisión."
+        elif prediccion >=300 and prediccion<370:
+            mensaje_consejo = "Tienes un buen puntaje. Sin embargo, siempre es recomendable seguir practicando y resolviendo ejercicios para mantener tus habilidades afiladas y asegurar un mejor desempeño en las pruebas."
+        elif prediccion >=370:
+            mensaje_consejo = "¡Felicitaciones! Tu puntaje es excelente. Continúa repasando los temas para mantener tu nivel y considera compartir tus técnicas de estudio con otros estudiantes."
+
         context = {
-            'puntaje': int(prediccion)
+            'puntaje': int(prediccion),
+            'msg': mensaje_consejo,
         }
         return render(request, "index.html", context)
     
